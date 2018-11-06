@@ -1,0 +1,8 @@
+{
+  "apiDomain": "test.domain",
+  "appId": "test-app",
+  "policy": "test-policy",
+  "timeout": "2000",
+  "username": "username",
+  "password": "password"
+}

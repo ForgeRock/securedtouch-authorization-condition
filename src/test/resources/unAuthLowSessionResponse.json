@@ -1,0 +1,34 @@
+[
+  {
+  "applicationId": "app1",
+  "username": " ElstonGunn",
+  "isActive": true,
+  "sessionStartTimestamp": "2016-04-11T08:20:50.796+03:00",
+  "timestamp": "2016-04-11T08:20:57.321+03:00",
+  "risk": {
+    "userAuthentication": {
+      "score": 560,
+      "thresholds": [
+        500,
+        600,
+        730
+      ],
+      "scoreDigest": "06c4cb70-3499-4286-aa5a-0f22286ae768",
+      "state": "evaluates",
+      "isCalibrated": true
+    }
+  },
+  "policy": {
+    "MIN_FRAUD_MODULE": {
+      "score": 200,
+      "thresholds": [
+        300,
+        450,
+        600
+      ],
+      "scoreDigest": "u2a17bbb-3499-4286-aa5a-0f22286ae753",
+      "state": "evaluates"
+    }
+  }
+}
+]

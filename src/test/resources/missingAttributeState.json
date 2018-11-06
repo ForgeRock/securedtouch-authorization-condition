@@ -1,0 +1,5 @@
+{
+  "apiDomain": "test.domain",
+  "policy": "test-policy",
+  "timeout": "2000"
+}

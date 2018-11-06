@@ -1,0 +1,55 @@
+[
+  {
+    "applicationId": "demo",
+    "username": "uuuu",
+    "isActive": false,
+    "sessionStartTimestamp": "1540292307754",
+    "sessionId": "2435dbf804f91cdd84885a3acfa8ea3b",
+    "timestamp": "1540292312265",
+    "sessionDigest": "1540292324991",
+    "appSessionId": "2435dbf804f91cdd84885a3acfa8ea3b",
+    "risk": {
+      "physicalDevice": {
+        "score": 999,
+        "scoreDigest": "1540292312265",
+        "thresholds": [
+          100,
+          400
+        ],
+        "state": "evaluates"
+      },
+      "fraudulentDevice": {
+        "score": 350,
+        "scoreDigest": "1540292312264",
+        "thresholds": [
+          200,
+          500,
+          800
+        ],
+        "state": "evaluates"
+      },
+      "fraudulentBehavior": {
+        "score": 999,
+        "scoreDigest": "1540292312265",
+        "thresholds": [
+          200,
+          500,
+          800
+        ],
+        "state": "evaluates"
+      }
+    },
+    "policy": {
+      "MIN_FRAUD_MODULE": {
+        "score": 740,
+        "scoreDigest": "1540292325024",
+        "thresholds": [
+          200,
+          400,
+          600
+        ],
+        "state": "evaluates"
+      }
+    }
+  }
+]
