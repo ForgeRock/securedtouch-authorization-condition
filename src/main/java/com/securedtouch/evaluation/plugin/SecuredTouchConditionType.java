@@ -21,13 +21,10 @@ import utils.RestTemplateUtil;
 
 import javax.security.auth.Subject;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static utils.SecuredTouchConsts.*;
+import static utils.SecuredTouchConst.*;
 
 public class SecuredTouchConditionType extends EntitlementConditionAdaptor {
 
@@ -41,6 +38,7 @@ public class SecuredTouchConditionType extends EntitlementConditionAdaptor {
     public static final String POLICY_FIELD = "policy";
     private String policy;
     public static final String TIMEOUT_FIELD = "timeout";
+    // timeout in millis
     private int timeout = DEFAULT_TIMEOUT;
 
     public static final String USERNAME_FIELD = "username";
@@ -135,20 +133,12 @@ public class SecuredTouchConditionType extends EntitlementConditionAdaptor {
         SessionRiskResponse sessionRiskScore = getSessionRiskScore(response, sessionId);
         this.debug.message(sessionRiskScore.getAdvice());
 
-        // build conditionDecision
-        ConditionDecision.Builder builder = ConditionDecision.newBuilder(sessionRiskScore.getAuthenticated());
-        Map<String, Set<String>> advices = new HashMap<String, Set<String>>();
+        // build conditionDecision and add to it securedtouch auth as advice
+        ConditionDecision conditionDecision = ConditionDecision.newBuilder(sessionRiskScore.getAuthenticated())
+                .setAdvice(Collections.singletonMap(SECUREDTOUCH_ADVICE_KEY, Collections.singleton(sessionRiskScore.getAdvice())))
+                .build();
 
-        // add session score
-        advices.put(SCORE_KEY, Collections.singleton(String.valueOf(sessionRiskScore.getScore())));
-
-        // add auth advice in case of failure
-        if(!sessionRiskScore.getAuthenticated()) {
-            advices.put(AUTH_ADVICE_KEY, Collections.singleton(sessionRiskScore.getAdvice()));
-        }
-        builder.setAdvice(advices);
-
-        return builder.build();
+        return conditionDecision;
     }
 
     private String configureRequestURL(String sessionId) {
@@ -217,14 +207,11 @@ public class SecuredTouchConditionType extends EntitlementConditionAdaptor {
         }
 
         if (score > max) {
-            info = String.format(ADVICE_SCROE_RESULT, sessionId, policyName, score, RESULT_AUTH);
-            return new SessionRiskResponse(Boolean.TRUE, info, score);
+            return new SessionRiskResponse(Boolean.TRUE, RESULT_AUTH, score);
         } else if (score < max && score > min) {
-            info = String.format(ADVICE_SCROE_RESULT, sessionId, policyName, score, RESULT_NEUTRAL);
-            return new SessionRiskResponse(Boolean.FALSE, info, score);
+            return new SessionRiskResponse(Boolean.FALSE, RESULT_NEUTRAL, score);
         } else {
-            info = String.format(ADVICE_SCROE_RESULT, sessionId, policyName, score, RESULT_RISK);
-            return new SessionRiskResponse(Boolean.FALSE, info, score);
+            return new SessionRiskResponse(Boolean.FALSE, RESULT_RISK, score);
         }
     }
 
