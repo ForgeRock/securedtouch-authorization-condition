@@ -2,7 +2,9 @@ package com.securedtouch.evaluation.plugin;
 
 import com.sun.identity.entitlement.ConditionDecision;
 import com.sun.identity.entitlement.EntitlementException;
-import org.json.JSONArray;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -15,8 +17,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.security.auth.Subject;
-import java.io.*;
-import java.util.Collections;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(SecuredTouchConditionType.class)
@@ -24,17 +24,16 @@ public class SecuredTouchConditionTypeTest {
 
     private static SecuredTouchConditionType securedTouchCondition;
 
-    private static final String APIDOMAIN_FIELD = "apiDomain";
-    private static final String APPID_FIELD = "appId";
+    private static final String API_DOMAIN_FIELD = "apiDomain";
+    private static final String APP_ID_FIELD = "appId";
     private static final String POLICY_FIELD = "policy";
     private static final String TIMEOUT_FIELD = "timeout";
 
-    public static final String AUTH_ADVICE_KEY = "auth_advice";
-    public static final String SCORE_KEY = "score";
+    public static final String AUTH_ADVICE_KEY = "SECUREDTOUCH";
 
     private static final String DEFAULT_POLICY = "MIN_FRAUD_MODULE";
-    private static final String UNAUTH_MID_ADVICE = "Neutral";
-    private static final String UNAUTH_LOW_ADVICE = "Risk";
+    private static final String UNAUTH_MID_ADVICE = "NO_THREAT";
+    private static final String UNAUTH_LOW_ADVICE = "FRAUD_ALERT";
 
     @BeforeClass
     public static void init() {
@@ -47,8 +46,8 @@ public class SecuredTouchConditionTypeTest {
         securedTouchCondition.setState(json);
         try {
             JSONObject jsonObject = new JSONObject(json);
-            Assert.assertEquals(jsonObject.getString(APIDOMAIN_FIELD), securedTouchCondition.getApiDomain());
-            Assert.assertEquals(jsonObject.getString(APPID_FIELD), securedTouchCondition.getAppId());
+            Assert.assertEquals(jsonObject.getString(API_DOMAIN_FIELD), securedTouchCondition.getApiDomain());
+            Assert.assertEquals(jsonObject.getString(APP_ID_FIELD), securedTouchCondition.getAppId());
             Assert.assertEquals(jsonObject.getString(POLICY_FIELD), securedTouchCondition.getPolicy());
             Assert.assertEquals(jsonObject.getInt(TIMEOUT_FIELD), securedTouchCondition.getTimeout());
         } catch (JSONException e) {
@@ -66,8 +65,8 @@ public class SecuredTouchConditionTypeTest {
             JSONObject expectedStateJson = new JSONObject(expectedState);
             JSONObject actualSteteJson = new JSONObject(state);
 
-            Assert.assertEquals(expectedStateJson.getString(APIDOMAIN_FIELD), actualSteteJson.getString(APIDOMAIN_FIELD));
-            Assert.assertEquals(expectedStateJson.getString(APPID_FIELD), actualSteteJson.getString(APPID_FIELD));
+            Assert.assertEquals(expectedStateJson.getString(API_DOMAIN_FIELD), actualSteteJson.getString(API_DOMAIN_FIELD));
+            Assert.assertEquals(expectedStateJson.getString(APP_ID_FIELD), actualSteteJson.getString(APP_ID_FIELD));
             Assert.assertEquals(expectedStateJson.getString(POLICY_FIELD), actualSteteJson.getString(POLICY_FIELD));
             Assert.assertEquals(expectedStateJson.getString(TIMEOUT_FIELD), actualSteteJson.getString(TIMEOUT_FIELD));
         } catch (JSONException e) {
